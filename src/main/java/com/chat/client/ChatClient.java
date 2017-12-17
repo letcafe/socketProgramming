@@ -1,5 +1,7 @@
 package com.chat.client;
 
+import com.chat.bean.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,9 +18,11 @@ public class ChatClient {
     JTextField outputStream;
     JButton sendButton;
     JScrollPane qScroller;
+    JLabel userInfoLabel;
 
     //客户端连接服务器Socket
     Socket socket;
+    User user;
 
     //流通道读写对象
     BufferedReader reader;
@@ -31,7 +35,6 @@ public class ChatClient {
     }
 
     private void init() {
-
         setupNetworking();//设置Client端初始链接信息
 
         Thread readerThread = new Thread(new comingStreamReader());
@@ -41,13 +44,14 @@ public class ChatClient {
     }
 
     private void setupUerInterface() {
-        frame = new JFrame("Socket Chat Client [ 本 机 I P : "  + IPUtil.getLocalIPAddr() + " ]");
+        user = new User(IPUtil.getLocalIPAddr());
+        frame = new JFrame("Socket Chat Client [ 本 机 I P : "  + user.getIpAddress() + " ]");
+        userInfoLabel = new JLabel(user.getNickName() + " [ " + user.getUserName() + " ] : ");
         mainPanel = new JPanel();
-        sendButton = new JButton("发送");
+        sendButton = new JButton("发 送");
         outputStream = new JTextField(20);
         comingStream = new JTextArea(28, 38);
         qScroller = new JScrollPane(comingStream);
-
 
         comingStream.setLineWrap(true);
         comingStream.setWrapStyleWord(true);
@@ -62,6 +66,7 @@ public class ChatClient {
         sendButton.addActionListener(new SendButtonListener(writer, outputStream));//绑定单击事件
 
         mainPanel.add(qScroller);
+        mainPanel.add(userInfoLabel);
         mainPanel.add(outputStream);
         mainPanel.add(sendButton);
 
@@ -72,7 +77,6 @@ public class ChatClient {
         frame.addWindowListener(new WindowClosingMessage());//设置关闭结束线程，并弹出对话确认框
         frame.setVisible(true);
     }
-
 
     private void setupNetworking() {
         try {
@@ -89,7 +93,6 @@ public class ChatClient {
             e.printStackTrace();
         }
     }
-
 
     private class comingStreamReader implements Runnable {
         @Override
