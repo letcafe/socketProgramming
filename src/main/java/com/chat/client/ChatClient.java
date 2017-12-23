@@ -1,14 +1,16 @@
 package com.chat.client;
 
-import com.chat.bean.User;
+import com.chat.dao.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * 启动局域网聊天客户端。当服务端启动后，运行加入聊天室
+ */
 public class ChatClient {
 
     //Swing相应组件
@@ -34,6 +36,9 @@ public class ChatClient {
         client.init();
     }
 
+    /**
+     * 初始化Client函数
+     */
     private void init() {
         setupNetworking();//设置Client端初始链接信息
 
@@ -43,8 +48,11 @@ public class ChatClient {
         setupUerInterface();//设置用户界面以及绑定事件
     }
 
+    /**
+     * UI相关以及事件绑定
+     */
     private void setupUerInterface() {
-        user = new User(IPUtil.getLocalIPAddr());
+        user = new User(IPUtil.getLocalIPAddr());//获取用户IP地址，并展示于标题栏
         frame = new JFrame("Socket Chat Client [ 本 机 I P : "  + user.getIpAddress() + " ]");
         userInfoLabel = new JLabel(user.getNickName() + " [ " + user.getUserName() + " ] : ");
         mainPanel = new JPanel();
@@ -78,6 +86,11 @@ public class ChatClient {
         frame.setVisible(true);
     }
 
+    /**
+     * 初始化网络，Socket端尝试链接
+     * UnknownHostException： IP出错，一般为网卡不在同一网段
+     * IOException： 读写错误，一般产生于读写中断
+     */
     private void setupNetworking() {
         try {
             socket = new Socket("192.168.2.196", 9001);
@@ -94,6 +107,9 @@ public class ChatClient {
         }
     }
 
+    /**
+     * Socket建立链接后，开启多线程进行数据读取
+     */
     private class comingStreamReader implements Runnable {
         @Override
         public void run() {
