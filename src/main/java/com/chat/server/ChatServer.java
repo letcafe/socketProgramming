@@ -42,7 +42,7 @@ public class ChatServer {
         }
 
         /**
-         * Server监听处理函数，当收到Socket请求建立连接时，对连接信息进行初始化
+         * Server监听处理函数，当收到Socket请求建立
          * @param clientSocket
          */
         public ClientHandler(Socket clientSocket) {
