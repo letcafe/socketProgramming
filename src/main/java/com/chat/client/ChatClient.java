@@ -80,7 +80,7 @@ public class ChatClient {
 
         frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
         frame.setSize(450, 580);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.addWindowListener(new WindowClosingMessage());//设置关闭结束线程，并弹出对话确认框
         frame.setVisible(true);

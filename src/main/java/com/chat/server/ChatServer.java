@@ -42,7 +42,7 @@ public class ChatServer {
         }
 
         /**
-         * Server监听处理函数，当收到Socket请求建立
+         * Server监听处理函数，当收到Socket请求建立链接是、时，进行处理
          * @param clientSocket
          */
         public ClientHandler(Socket clientSocket) {
@@ -81,9 +81,10 @@ public class ChatServer {
         clientOutputStreams = new ArrayList();
         try {
             ServerSocket serverSocket = new ServerSocket(SOCKET_LISTENING_PORT);
-
+            System.out.println("Creating listener, now listening port " + SOCKET_LISTENING_PORT + " ...");
             while (true) {
                 Socket clientSocket = serverSocket.accept();
+
                 System.out.println(clientSocket.getRemoteSocketAddress());
                 PrintWriter writer =  new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(),
                         "utf-8")); //UTF-8格式流向客户端写入
@@ -91,7 +92,7 @@ public class ChatServer {
 
                 Thread t = new Thread(new ClientHandler(clientSocket));
                 t.start();
-                System.out.println("got a connection");
+                System.out.println("Get a socket connection successfully");
             }
         } catch (IOException e) {
             e.printStackTrace();
