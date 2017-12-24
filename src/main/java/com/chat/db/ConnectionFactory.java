@@ -19,8 +19,8 @@ public class ConnectionFactory {
      */
     static{
         driverName = "com.mysql.jdbc.Driver";
-        url = "jdbc:mysql://192.168.2.196/socketchat?useUnicode=true&characterEncoding=utf-8";//server ip:192.168.2.196
-        loginname = "root";
+        url = "jdbc:mysql://192.168.2.196/socketchat?useUnicode=true&characterEncoding=utf-8&useSSL=false";//server ip:192.168.2.196
+        loginname = "gdy";
         password = "123456";
     }
 
@@ -31,7 +31,7 @@ public class ConnectionFactory {
      * @return JDBC加载驱动异常以及数据库链接创建异常
      */
     public static Connection getConn(){
-        System.out.println("get conn");
+        System.out.println("Get MySQL connection successfully");
         try {
             Class.forName(driverName);
             conn = DriverManager.getConnection(url, loginname, password);
